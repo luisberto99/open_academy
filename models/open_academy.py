@@ -1,19 +1,39 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import _, api, exceptions, fields, models
 
 class Course(models.Model):
      _name = 'openacademy.course'
      _description = 'Cursos'
      name = fields.Char(string="Title", required=True)    
      description = fields.Text("Description")
+     responsible_id = fields.Many2one(
+          'res.users',
+          ondelete = 'set null',
+          string="Responsible",
+          index=True
+     )
 
-#     name = fields.Char()
-#     value = fields.Integer()
-#     value2 = fields.Float(compute="_value_pc", store=True)
-#     description = fields.Text()
-#
-#     @api.depends('value')
-#     def _value_pc(self):
-#         for record in self:
-#             record.value2 = float(record.value) / 100
+
+     def copy(self, default=None):
+        default = dict(default or {})
+
+        copied_count = self.search_count(
+            [('name', '=like', _(u"Copy of {}%").format(self.name))])
+        if not copied_count:
+            new_name = _(u"Copy of {}").format(self.name)
+        else:
+            new_name = _(u"Copy of {} ({})").format(self.name, copied_count)
+
+        default['name'] = new_name
+        return super(Course, self).copy(default)
+
+     _sql_constraints = [
+        ('name_description_check',
+         'CHECK(name != description)',
+         "El titulo y la descripción no pueden ser iguales"),
+
+        ('name_unique',
+         'UNIQUE(name)',
+         "El titulo del curso debe ser unico"),
+    ]

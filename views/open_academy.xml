@@ -10,8 +10,13 @@
                 <sheet>
                     <group>
                         <field name="name" />
-                        <field name="description" />
+                        <field name="responsible_id" />
                     </group>
+                    <notebook>
+                        <page name="description" string="Descripcion">
+                            <field name="description" />
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field> 
@@ -24,6 +29,7 @@
             <search>
                 <field name="name" />
                 <field name="description" />
+                <field name="responsible_id" />
             </search>
         </field>
     </record>
