@@ -20,14 +20,13 @@
     'version': '0.4',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','board', 'website'],
+    'depends': ['base','board'],
 
     # always loaded
     'data': [
         'security/ir.model.access.csv',
         'views/open_academy.xml',
-        'views/partner.xml',
-        'views/reports.xml'
+        'views/partner.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
